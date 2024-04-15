@@ -17,24 +17,23 @@ Produce a document detailing your testing strategy, including any obstacles you 
 addressed them. Highlight the logic behind your test scenarios and
 decision-making process.
 
+- - - 
 
-Test plan:
-For end to end UI tests they should focus on:
-- Key User Flows
-- Visuals
-
-
+## Test plan: 
 Assumption: header footer excluded
 
-User scenarios (functional):
-- Select payment frequency > get price estimate > Get started
-- Reviews full feature breakdown > Get in touch email
+End to end UI tests:
+Analysed pricing page and determined the following Scenarios from the key User Flows:
+- User wants to Pay Annually, moves sliders to get an estimate, clicks Get Started. 
+- User reviews full feature breakdown and tooltips, clicks Get in touch
+- User wants to view Catalogs.
+- User wants to view the Artist plan.
 
-Visual testing
-- Screenshot
+Price check tests:
+- Check calculation algorithm is correct for range slider values.
 
-Interactive elements
-- Radio button
+Need to ensure the scenarios cover the following interactive elements on the page:
+- Toggle button
 - Plan Cards:
     - User Slider
     - Files Slider
@@ -44,8 +43,9 @@ Interactive elements
 - Get in touch email link
 - tooltips on hover
 
-Pricing calculation:
-- In my opinion the end-to-end layer isn't the best place to test calculations, messy to grab the values. Would be much better tested at unit/integration layer with mocks.
+Visual testing
+- Screenshot
 
 Challenges: 
-- test-ids would help a lot with locating elements especially those with generic names
+- Locating specific elements that have generic names (e.g. plan price values, sliders, get started button) is difficult. Element test-ids would help with this.
+- Pricing page does not seem to interact with any outside APIs so in my opinion automated testing would be more effective and efficient on the integration layer with mocks.

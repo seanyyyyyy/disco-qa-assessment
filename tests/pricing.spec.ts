@@ -6,17 +6,39 @@ test.beforeEach(async ( {page} ) => {
   await expect(page).toHaveTitle('DISCO | Pricing');
 });
 
+test('Pay Annually > Move Sliders > Get Started', async ({ page }) => {
+  // Click Accept cookies to remove modal
+  const acceptButton = await page.getByRole('button', { name: 'Accept all Cookies' }).click();
 
-test('User flow: Pay Annually > Move Slider', async ({ page }) => {
+  // Click Pay annually toggle button and check the prices have changed correctly
   await page.locator('[class="Toggle"]').click();
-
   const prices = await page.locator('[class="Price_Num heading--H5"]').all();
-  expect(prices.length == 3);
-  expect(await prices[0].textContent() == '$9');
-  expect(await prices[1].textContent() == '$13.50');
-  expect(await prices[2].textContent() == '$22.50');
+  expect(prices.length).toEqual(3);
+  expect(prices[0]).toHaveText('$9');
+  expect(prices[1]).toHaveText('$13.50');
+  expect(prices[2]).toHaveText('$22.50');
 
-  
+  // Move Plus plan slider and check Plus plan price value has changed correctly
+  const sliders = await page.locator('[class="rc-slider rc-slider-horizontal"]').all();
+  expect(sliders.length).toEqual(4);
+  const slider1box = await sliders[0].boundingBox();
+  await page.mouse.click(
+    slider1box!.x + slider1box!.width / 2, 
+    slider1box!.y + slider1box!.height / 2
+  );
+  expect(prices[0]).toHaveText('$9');
+  expect(prices[1]).toHaveText('$81');
+  expect(prices[2]).toHaveText('$22.50');
+
+  // Click Get started and check correct page
+  const getStartedLinks = await page.getByRole('link', { name: 'Get started' }).all();
+  expect(getStartedLinks.length).toEqual(4);
+  await getStartedLinks[1].click();
+  await expect(page).toHaveTitle('DISCO | Sign up');
+});
+
+test('Review full features > Tooltips > Get In Touch', async ({ page }) => {
+  //TODO
 });
 
 test('User flow: view catalogs', async ({ page }) => {
