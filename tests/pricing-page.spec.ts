@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ( {page} ) => {
-  console.log(`Running ${test.info().title}`);
   await page.goto('https://www.disco.ac/pricing');
   await expect(page).toHaveTitle('DISCO | Pricing');
 });
@@ -22,6 +21,9 @@ test('Pay Annually > Move Sliders > Get Started', async ({ page }) => {
   const sliders = await page.locator('[class="rc-slider rc-slider-horizontal"]').all();
   expect(sliders.length).toEqual(4);
   const slider1box = await sliders[0].boundingBox();
+  if (!slider1box) {
+    throw new Error('Unable to find bounding box on element');
+  }
   await page.mouse.click(
     slider1box!.x + slider1box!.width / 2, 
     slider1box!.y + slider1box!.height / 2
